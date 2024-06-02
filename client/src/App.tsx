@@ -2,32 +2,54 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import { DEFAULT_MESSAGE } from './constants'
+import postRequest from './api/apiService'
+import Header from './components/Header'
+import PythonEditor from './components/Editor'
+import Output from './components/Output'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [output, setOutput] = useState<string>(DEFAULT_MESSAGE)
+  const [editorText, setEditorText] = useState<string>('')
+
+  const updateEditorText = (new_text) => {
+    setEditorText(new_text)
+  }
+
+  const handleTestCode = async () => {
+    // send editor text to api so it can execute
+    const { data, error } = await postRequest('/test-code', {
+      code: editorText
+    });
+
+    setOutput(data ? data : error.message)
+  }
+
+  const handleSubmit = async () => {
+    // send editor text to api so it can execute
+    const { data, error } = await postRequest('/submit', {
+      code: editorText
+    });
+
+    setOutput(data ? data : error.message)
+  }
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div className="min-h-screen min-w-full app-container">
+        <div className="p-6">
+          <Header handleTestCode={handleTestCode} handleSubmit={handleSubmit} />
+        </div>
+        <div className="flex">
+          <div className="w-3/5 pt-1 pb-6 pl-6 pr-6">
+            <PythonEditor update={updateEditorText} />
+          </div>
+          <div className="w-2/5 pt-1 pb-6 pl-6 pr-6">
+            <Output value={output}/>
+          </div>
+        </div>
+        
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   )
 }
