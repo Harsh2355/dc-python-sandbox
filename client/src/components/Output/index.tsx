@@ -7,7 +7,7 @@ import { OutputProps } from './types'
 export default function Output({ value }: OutputProps) {
     return ( 
         <div href="#" className="output border border-gray-200 shadow p-3">
-            {value}
+            <pre className="whitespace-pre-wrap break-words">Output: <br/>{value}</pre>
         </div>
     )
 }

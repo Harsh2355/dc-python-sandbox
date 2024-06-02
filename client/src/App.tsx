@@ -22,7 +22,7 @@ function App() {
       code: editorText
     });
 
-    setOutput(data ? data : error.message)
+    setOutput(data.message)
   }
 
   const handleSubmit = async () => {
