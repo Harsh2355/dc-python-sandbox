@@ -1,0 +1,13 @@
+.heading {
+    color: #76ABAE;
+}
+
+.btn {
+    background-color: #76ABAE;
+    color: #222831
+}
+
+.btn:hover {
+    background-color: #EEEEEE;
+    color: #222831
+}

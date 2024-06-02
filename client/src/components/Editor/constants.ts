@@ -1,0 +1,1 @@
+export const DEFAULT_MESSAGE = "# Welcome to your Python Sandbox"

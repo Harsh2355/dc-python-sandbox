@@ -1,0 +1,1 @@
+export const DEFAULT_MESSAGE = "Test code to view output..."
