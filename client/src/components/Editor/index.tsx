@@ -13,12 +13,17 @@ export default function PythonEditor({ update }: EditorProps) {
     // Effect to load the saved text from session storage when the component mounts
     useEffect(() => {
         const savedText: string = sessionStorage.getItem('savedText');
-        console.log(savedText)
-        if (savedText != '') {
+        if (savedText && savedText !== '') {
             update(savedText)
             setText(savedText)
         }
+
+        // cleanup
+        return () => {
+            sessionStorage.removeItem('savedText');
+        };
     }, []);
+
 
     const handleEditorChange = (value: string, event: Event) => {
         sessionStorage.setItem('savedText', value);

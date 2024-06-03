@@ -3,10 +3,10 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import { DEFAULT_MESSAGE ,WAITING_MESSAAGE } from './constants'
-import postRequest from './api/apiService'
-import Header from './components/Header'
-import PythonEditor from './components/Editor'
-import Output from './components/Output'
+import postRequest from '../../api/apiService'
+import Header from '../../components/Header'
+import PythonEditor from '../../components/Editor'
+import Output from '../../components/Output'
 
 function App() {
   const [output, setOutput] = useState<string>(DEFAULT_MESSAGE)
