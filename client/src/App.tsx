@@ -2,7 +2,7 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-import { DEFAULT_MESSAGE } from './constants'
+import { DEFAULT_MESSAGE ,WAITING_MESSAAGE } from './constants'
 import postRequest from './api/apiService'
 import Header from './components/Header'
 import PythonEditor from './components/Editor'
@@ -17,21 +17,25 @@ function App() {
   }
 
   const handleTestCode = async () => {
+    setOutput(WAITING_MESSAAGE)
+
     // send editor text to api so it can execute
     const { data, error } = await postRequest('/test-code', {
       code: editorText
     });
 
-    setOutput(data ? data : error.message)
+    setOutput(data.message)
   }
 
   const handleSubmit = async () => {
+    setOutput(WAITING_MESSAAGE)
+    
     // send editor text to api so it can execute
     const { data, error } = await postRequest('/submit', {
       code: editorText
     });
 
-    setOutput(data ? data : error.message)
+    setOutput(data.message)
   }
 
   return (

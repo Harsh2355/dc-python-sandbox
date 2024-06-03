@@ -1,0 +1,14 @@
+# Dockerfile
+FROM python:3.12-slim
+
+WORKDIR /usr/src/app
+
+COPY . .
+
+# no root access for user code
+RUN adduser -D myuser
+USER myuser
+
+RUN pip install --no-cache-dir pandas scipy
+
+CMD ["python3", "user_code.py"]

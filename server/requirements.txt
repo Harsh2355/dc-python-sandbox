@@ -1,0 +1,6 @@
+fastapi
+psycopg2
+sqlalchemy-cockroachdb
+uvicorn
+docker
+urllib3==1.26.15 
