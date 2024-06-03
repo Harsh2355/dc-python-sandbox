@@ -1,4 +1,4 @@
 export interface HeaderProps {
-    handleTestCode: () => void,
-    handleSubmit: () => void
+  handleTestCode: () => void;
+  handleSubmit: () => void;
 }

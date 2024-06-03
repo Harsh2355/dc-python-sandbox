@@ -1,42 +1,42 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import { DEFAULT_MESSAGE ,WAITING_MESSAAGE } from './constants'
-import postRequest from '../../api/apiService'
-import Header from '../../components/Header'
-import PythonEditor from '../../components/Editor'
-import Output from '../../components/Output'
+import { useState } from "react";
+import reactLogo from "./assets/react.svg";
+import viteLogo from "/vite.svg";
+import "./App.css";
+import { DEFAULT_MESSAGE, WAITING_MESSAAGE } from "./constants";
+import postRequest from "../../api/apiService";
+import Header from "../../components/Header";
+import PythonEditor from "../../components/Editor";
+import Output from "../../components/Output";
 
 function App() {
-  const [output, setOutput] = useState<string>(DEFAULT_MESSAGE)
-  const [editorText, setEditorText] = useState<string>('')
+  const [output, setOutput] = useState<string>(DEFAULT_MESSAGE);
+  const [editorText, setEditorText] = useState<string>("");
 
   const updateEditorText = (new_text) => {
-    setEditorText(new_text)
-  }
+    setEditorText(new_text);
+  };
 
   const handleTestCode = async () => {
-    setOutput(WAITING_MESSAAGE)
+    setOutput(WAITING_MESSAAGE);
 
     // send editor text to api so it can execute
-    const { data, error } = await postRequest('/test-code', {
-      code: editorText
+    const { data, error } = await postRequest("/test-code", {
+      code: editorText,
     });
 
-    setOutput(data.message)
-  }
+    setOutput(data.message);
+  };
 
   const handleSubmit = async () => {
-    setOutput(WAITING_MESSAAGE)
-    
+    setOutput(WAITING_MESSAAGE);
+
     // send editor text to api so it can execute
-    const { data, error } = await postRequest('/submit', {
-      code: editorText
+    const { data, error } = await postRequest("/submit", {
+      code: editorText,
     });
 
-    setOutput(data.message)
-  }
+    setOutput(data.message);
+  };
 
   return (
     <>
@@ -49,13 +49,12 @@ function App() {
             <PythonEditor update={updateEditorText} />
           </div>
           <div className="w-2/5 pt-1 pb-6 pl-6 pr-6">
-            <Output value={output}/>
+            <Output value={output} />
           </div>
         </div>
-        
       </div>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

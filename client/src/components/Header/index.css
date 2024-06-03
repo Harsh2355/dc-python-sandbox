@@ -1,13 +1,13 @@
 .heading {
-    color: #76ABAE;
+  color: #76abae;
 }
 
 .btn {
-    background-color: #76ABAE;
-    color: #222831
+  background-color: #76abae;
+  color: #222831;
 }
 
 .btn:hover {
-    background-color: #EEEEEE;
-    color: #222831
+  background-color: #eeeeee;
+  color: #222831;
 }

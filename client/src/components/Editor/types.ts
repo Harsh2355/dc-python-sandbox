@@ -1,3 +1,3 @@
 export interface EditorProps {
-    update: (arg0: string) => void
+  update: (arg0: string) => void;
 }

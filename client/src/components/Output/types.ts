@@ -1,4 +1,3 @@
-
 export interface OutputProps {
-    value: string
+  value: string;
 }

@@ -1,6 +1,6 @@
-import  { APP_NAME, TEST_CODE, SUBMIT } from './constants';
-import './index.css';
-import { HeaderProps } from './types';
+import { APP_NAME, TEST_CODE, SUBMIT } from "./constants";
+import "./index.css";
+import { HeaderProps } from "./types";
 
 export default function Header({ handleTestCode, handleSubmit }: HeaderProps) {
   return (
