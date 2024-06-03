@@ -1,2 +1,2 @@
 # Welcome to your Python Sandbox
-import pandas
+print("HELLO")

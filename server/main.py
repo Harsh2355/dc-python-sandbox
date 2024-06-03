@@ -5,6 +5,8 @@ from sqlalchemy.orm import Session
 from . import crud, models, schemas
 from .database import SessionLocal, engine
 import epicbox
+import subprocess
+import os
 
 epicbox.configure(
     profiles=[
@@ -44,19 +46,44 @@ def get_db():
     finally:
         db.close()
 
+@app.on_event("startup")
+async def startup_event():
+    # Build the Docker image
+    build_process = subprocess.run(['docker', 'build', '-t', 'code_sandbox', './server'], capture_output=True, text=True)
+
+def execute_code(code: str):
+    with open('server/user_code.py', 'w') as file:
+        file.write(code)
+    
+    # Run the Docker container and capture output
+    # Setup a timeout to protect against large malicious operations
+    # No network connectivity means user code can't communicate over the network making the container more secure
+    # Restrict resource utilzation to enhance security against untrusted/maliciuos code
+    run_process = subprocess.run(['docker', 'run', '--network', 'none', '--ulimit', 'cpu=5:5', '--cpus=1.0', '--memory=512m', '--pids-limit=20', '--rm', '-v', f"{os.getcwd()}/server/user_code.py:/usr/src/app/user_code.py", 'code_sandbox'], capture_output=True, text=True)
+    
+    return run_process.stdout, run_process.stderr
 
 @app.post("/test-code", response_model = schemas.ExecutionOutput)
 def test_code(python_code: schemas.PythonCode, db: Session = Depends(get_db)):
 
-    with open('server/user_code.py', 'w') as file:
-        file.write(python_code.code)
+    stdout, stderr = execute_code(python_code.code)
     
-    files = [{ 'name': 'user_code.py', 'content': python_code.code.encode('utf-8')}]
-    output = epicbox.run('python', 'python3 user_code.py', files=files, limits=limits)
-
-    if output['exit_code'] != 0:
-        return schemas.ExecutionOutput(message=output['stderr'])
+    if stdout == "":
+        return schemas.ExecutionOutput(message=stderr)
     
-    return schemas.ExecutionOutput(message=output['stdout'])
+    return schemas.ExecutionOutput(message=stdout)
 
+@app.post("/submit", response_model = schemas.ExecutionOutput)
+def test_code(python_code: schemas.PythonCode, db: Session = Depends(get_db)):
+
+    stdout, stderr = execute_code(python_code.code)
+    
+    if stdout == "":
+        return schemas.ExecutionOutput(message=f'Could not submit...\n {stderr}')
+    
+    # persists in db
+    output: schemas.ExecutionOutput = schemas.ExecutionOutput(message=stdout)
+    crud.submit_code(db, python_code, output)
+
+    return schemas.ExecutionOutput(message='Congrats! Your code has been sucessfully submitted.')
 
