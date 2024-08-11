@@ -1,5 +1,5 @@
 
-# Datacurve Assessment - Python Sandbox
+# Python Sandbox
 
 This project allows a user to execute python3.12 code in a secure sandboxed environment and submit it so that it can persist in a database.
 
